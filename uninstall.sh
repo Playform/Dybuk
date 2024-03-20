@@ -24,4 +24,3 @@ function main() {
 
 main "$@"
 exit "$?"
-

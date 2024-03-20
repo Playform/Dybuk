@@ -22,4 +22,3 @@ function ask_yesno() {
 	[ "$READ_RESULT" == "y" ] && return "$?"
 	! [ "$READ_RESULT" == "n" ] || return "$?"
 }
-
