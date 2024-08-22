@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 function config() {
 	cd "$(dirname "$BASH_SOURCE")"
