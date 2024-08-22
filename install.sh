@@ -44,22 +44,22 @@ function main() {
 
 	[[ ! -e "target/release/dybuk" || ! -e "target/release/deps" ]]
 	case "$?" in
-		0)
-			_install
-			;;
+	0)
+		_install
+		;;
 
-		1)
-			log_e "Generated files doesn't exists."
-			if [ "$EUID" = "0" ]; then
-				log_e "Building the project with root privileges is prohibited."
-				return 1
-			fi
+	1)
+		log_e "Generated files doesn't exists."
+		if [ "$EUID" = "0" ]; then
+			log_e "Building the project with root privileges is prohibited."
+			return 1
+		fi
 
-			if ask_yesno "Build project"; then
-				build && _install
-				return "$?"
-			fi
-			;;
+		if ask_yesno "Build project"; then
+			build && _install
+			return "$?"
+		fi
+		;;
 	esac
 }
 
