@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function config() {
 	set -e

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 inline() { echo -en "$*"; }
 log_l() { inline ":: $*\n"; }
