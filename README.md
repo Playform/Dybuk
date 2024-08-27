@@ -5,7 +5,7 @@ other compilers aswell.
 
 <img src="screenshot.png" width="550">
 
-## Usage
+## 🛠️ Usage
 
 First of all install dybuk.
 
