@@ -37,9 +37,13 @@ impl<'a> Iterator for &'a mut MessageIter {
 		}
 
 		let mut res = Vec::new();
+
 		let mut file = String::new();
+
 		let mut stop = false;
+
 		let si = stdin();
+
 		let stdin = si.lock().lines().map(|x| x.expect("Stdin failed"));
 
 		for l in once(self.buf.clone()).chain(stdin) {
