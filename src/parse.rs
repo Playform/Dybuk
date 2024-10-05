@@ -1,14 +1,15 @@
-use regex::Regex;
 use std::{
 	io::{prelude::*, stdin},
 	iter::once,
 };
 
+use regex::Regex;
+
 pub struct MessageIter {
-	buf: String,
-	terminated: bool,
-	pub errors: u16,
-	pub warnings: u16,
+	buf:String,
+	terminated:bool,
+	pub errors:u16,
+	pub warnings:u16,
 }
 
 pub enum Message {
@@ -65,7 +66,10 @@ impl<'a> Iterator for &'a mut MessageIter {
 				let caps = re_header.captures(&l).unwrap();
 				file = caps.at(1).unwrap_or("?").to_string();
 
-				res.push(Header(file.clone(), caps.at(2).unwrap_or("?").to_string()));
+				res.push(Header(
+					file.clone(),
+					caps.at(2).unwrap_or("?").to_string(),
+				));
 
 				let msg = caps.at(4).unwrap_or("?").to_string();
 
@@ -74,16 +78,18 @@ impl<'a> Iterator for &'a mut MessageIter {
 					"warning: " => {
 						self.warnings += 1;
 						res.push(Warning(msg));
-					}
+					},
 					"note: " => res.push(Note(msg)),
 					"error: " => {
 						self.errors += 1;
 						res.push(Error(msg));
-					}
+					},
 					"help: " => res.push(Help(msg)),
 					_ => res.push(Wat),
 				}
-			} else if l.len() > file.len() && re_source.is_match(&l[file.len()..]) && is_not_cmd(&l)
+			} else if l.len() > file.len()
+				&& re_source.is_match(&l[file.len()..])
+				&& is_not_cmd(&l)
 			{
 				let caps = re_source.captures(&l).unwrap();
 
@@ -104,7 +110,10 @@ impl<'a> Iterator for &'a mut MessageIter {
 				res.push(Aborting);
 				stop = true;
 				self.terminated = true;
-			} else if l.contains("Compilining ") || l.contains("file:///home/") || l.is_empty() {
+			} else if l.contains("Compilining ")
+				|| l.contains("file:///home/")
+				|| l.is_empty()
+			{
 				// todo
 			} else if l.contains("  ...") {
 				res.push(Etc);
@@ -114,15 +123,11 @@ impl<'a> Iterator for &'a mut MessageIter {
 		}
 
 		self.terminated = true;
-		if stop {
-			Some(res)
-		} else {
-			None
-		}
+		if stop { Some(res) } else { None }
 	}
 }
 
-fn is_not_cmd(l: &str) -> bool {
+fn is_not_cmd(l:&str) -> bool {
 	l.len() < 30
 		|| !(l.starts_with("rustc ")
 			|| l.starts_with("cargo ")
@@ -141,6 +146,11 @@ fn is_not_cmd(l: &str) -> bool {
 
 impl MessageIter {
 	pub fn new() -> Self {
-		MessageIter { buf: String::new(), terminated: false, errors: 0, warnings: 0 }
+		MessageIter {
+			buf:String::new(),
+			terminated:false,
+			errors:0,
+			warnings:0,
+		}
 	}
 }
