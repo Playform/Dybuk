@@ -6,11 +6,7 @@ impl Message {
 	pub fn print(self) {
 		match self {
 			Header(ref file, ref line) => {
-				println!(
-					"+---- {} : {} ----+",
-					Blue.bold().paint(file),
-					Blue.paint(line)
-				)
+				println!("+---- {} : {} ----+", Blue.bold().paint(file), Blue.paint(line))
 			},
 			Warning(warn) => {
 				println!(

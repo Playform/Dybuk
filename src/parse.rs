@@ -66,10 +66,7 @@ impl<'a> Iterator for &'a mut MessageIter {
 				let caps = re_header.captures(&l).unwrap();
 				file = caps.at(1).unwrap_or("?").to_string();
 
-				res.push(Header(
-					file.clone(),
-					caps.at(2).unwrap_or("?").to_string(),
-				));
+				res.push(Header(file.clone(), caps.at(2).unwrap_or("?").to_string()));
 
 				let msg = caps.at(4).unwrap_or("?").to_string();
 
@@ -87,9 +84,7 @@ impl<'a> Iterator for &'a mut MessageIter {
 					"help: " => res.push(Help(msg)),
 					_ => res.push(Wat),
 				}
-			} else if l.len() > file.len()
-				&& re_source.is_match(&l[file.len()..])
-				&& is_not_cmd(&l)
+			} else if l.len() > file.len() && re_source.is_match(&l[file.len()..]) && is_not_cmd(&l)
 			{
 				let caps = re_source.captures(&l).unwrap();
 
@@ -110,10 +105,7 @@ impl<'a> Iterator for &'a mut MessageIter {
 				res.push(Aborting);
 				stop = true;
 				self.terminated = true;
-			} else if l.contains("Compilining ")
-				|| l.contains("file:///home/")
-				|| l.is_empty()
-			{
+			} else if l.contains("Compilining ") || l.contains("file:///home/") || l.is_empty() {
 				// todo
 			} else if l.contains("  ...") {
 				res.push(Etc);
@@ -146,11 +138,6 @@ fn is_not_cmd(l:&str) -> bool {
 
 impl MessageIter {
 	pub fn new() -> Self {
-		MessageIter {
-			buf:String::new(),
-			terminated:false,
-			errors:0,
-			warnings:0,
-		}
+		MessageIter { buf:String::new(), terminated:false, errors:0, warnings:0 }
 	}
 }

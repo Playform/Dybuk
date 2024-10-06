@@ -7,9 +7,7 @@ pub fn wrap_msg(s:String, n:usize) -> String {
 	chunks.next().unwrap_or("?".to_string())
 		+ &chunks
 			.map(|ref x| {
-				"\n           >  ".to_string()
-					+ &repeat(" ").take(n).collect::<String>()
-					+ x
+				"\n           >  ".to_string() + &repeat(" ").take(n).collect::<String>() + x
 			})
 			.collect::<String>()
 }
