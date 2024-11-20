@@ -6,3 +6,8 @@ authors = ["Ticki <Ticki@users.noreply.github.com>"]
 [dependencies]
 term-painter = "*"
 regex = "*"
+unbug = { version = "0.2.0", features = ["enable"] }
+
+[features]
+default = []
+Debug = ["unbug/enable"]
