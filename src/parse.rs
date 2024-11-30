@@ -52,18 +52,22 @@ impl<'a> Iterator for &'a mut MessageIter {
 				r"([0-9A-Za-z_\.\\/>< ]+):(\d+):\d+: .*(warning: |note: |error: |help: )(.*)",
 			)
 			.unwrap();
+
 			let re_source = Regex::new(r"(\d+) (.*)").unwrap();
+
 			if re_header.is_match(&l) {
 				if !stop {
 					stop = true;
 				} else {
 					self.buf = l.to_string();
+
 					return Some(res);
 				}
 
 				res.push(NewLine);
 
 				let caps = re_header.captures(&l).unwrap();
+
 				file = caps.at(1).unwrap_or("?").to_string();
 
 				res.push(Header(file.clone(), caps.at(2).unwrap_or("?").to_string()));
@@ -74,11 +78,13 @@ impl<'a> Iterator for &'a mut MessageIter {
 				match caps.at(3).unwrap_or("?") {
 					"warning: " => {
 						self.warnings += 1;
+
 						res.push(Warning(msg));
 					},
 					"note: " => res.push(Note(msg)),
 					"error: " => {
 						self.errors += 1;
+
 						res.push(Error(msg));
 					},
 					"help: " => res.push(Help(msg)),
@@ -103,7 +109,9 @@ impl<'a> Iterator for &'a mut MessageIter {
 				|| l.contains("Could not compile")
 			{
 				res.push(Aborting);
+
 				stop = true;
+
 				self.terminated = true;
 			} else if l.contains("Compilining ") || l.contains("file:///home/") || l.is_empty() {
 				// todo
@@ -115,6 +123,7 @@ impl<'a> Iterator for &'a mut MessageIter {
 		}
 
 		self.terminated = true;
+
 		if stop { Some(res) } else { None }
 	}
 }
